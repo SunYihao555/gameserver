@@ -28,8 +28,8 @@ public class GameServer {
 
     public void start(int port){
 //        定时器,定时检查心跳包
-        Timer timer = new Timer();
-        timer.schedule(new CheckTask(3000l),3000,3000);
+//        Timer timer = new Timer();
+//        timer.schedule(new CheckTask(3000l),3000,3000);
         try (ServerSocket serverSocket = new ServerSocket(port)){
             Socket cli;
             while((cli = serverSocket.accept())!=null){

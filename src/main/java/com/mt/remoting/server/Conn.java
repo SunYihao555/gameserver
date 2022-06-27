@@ -18,7 +18,17 @@ public class Conn {
     private static final int BUFFER_SIZE = 1024;
     public long lastAsyncTime;
     private int pointer;
-//    public void read(){
+    private byte[] ready;
+
+    public byte[] getReady() {
+        return ready;
+    }
+
+    public void setReady(byte[] ready) {
+        this.ready = ready;
+    }
+
+    //    public void read(){
 //        try {
 //
 //            socket.getInputStream().;
