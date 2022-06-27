@@ -19,13 +19,14 @@ public abstract class BroadCastProtocol extends Protocol{
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    //交给子类实现
-                    doOther();
+
                 }
             }
 
         }
+        //交给子类实现
+        doOther(conn);
     }
 
-    public void doOther(){};
+    public void doOther(Conn conn){};
 }

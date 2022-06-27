@@ -24,6 +24,7 @@ public class ConnHandleRunnable implements Runnable{
             if(protocol.equals("shut down")){
                 break;
             }
+            System.out.println("=========执行协议==========");
             conn.execute(ProtocolFactory.getProtocol(protocol.split(":")[0],protocol.split(":")[1]));
         }
         System.out.println("连接中断");
