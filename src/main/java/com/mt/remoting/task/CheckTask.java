@@ -15,8 +15,8 @@ public class CheckTask extends TimerTask {
         for (Conn conn : GameServer.activeLink) {
             synchronized (conn){
                 if(System.currentTimeMillis()-conn.lastAsyncTime>timeLimit){
+                    System.out.println("关闭了"+conn.getId()+"的无效连接");
                     conn.close();
-                    GameServer.activeLink.remove(conn);
                 }
             }
         }

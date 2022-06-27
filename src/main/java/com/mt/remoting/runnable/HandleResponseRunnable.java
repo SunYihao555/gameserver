@@ -1,9 +1,11 @@
 package com.mt.remoting.runnable;
 
+import com.mt.remoting.decode.DecodeUtils;
 import com.mt.remoting.util.ProtocolUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 
 public class HandleResponseRunnable implements Runnable{
     private InputStream inputStream;
@@ -14,14 +16,13 @@ public class HandleResponseRunnable implements Runnable{
     public void run() {
         byte[] buffer = new byte[1024];
         while(true){
+            String protocol = null;
             try {
-                inputStream.read(buffer);
-            } catch (IOException e) {
+                protocol = DecodeUtils.getProtocol(inputStream);
+            } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
-            System.out.println(String.valueOf(buffer));
-
-
+            System.out.println(protocol);
         }
 
     }

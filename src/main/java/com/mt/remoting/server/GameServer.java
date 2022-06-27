@@ -1,12 +1,14 @@
 package com.mt.remoting.server;
 
 import com.mt.remoting.runnable.ConnHandleRunnable;
+import com.mt.remoting.task.CheckTask;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
 
 public class GameServer {
     Conn[] conns;
@@ -24,8 +26,11 @@ public class GameServer {
 
 
     public void start(int port){
+//        定时器,定时检查心跳包
+//        Timer timer = new Timer();
+//        timer.schedule(new CheckTask(3000l),3000,3000);
         try (ServerSocket serverSocket = new ServerSocket(port)){
-            Socket cli = null;
+            Socket cli;
             while((cli = serverSocket.accept())!=null){
                 Conn conn = null;
                 for(int i = 0;i<MAX_LENGTH;i++){

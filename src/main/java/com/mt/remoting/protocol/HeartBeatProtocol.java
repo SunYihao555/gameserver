@@ -1,7 +1,9 @@
 package com.mt.remoting.protocol;
 
+import com.mt.remoting.annotation.ProtocolComponent;
 import com.mt.remoting.server.Conn;
 
+@ProtocolComponent(name = "heart beat")
 public class HeartBeatProtocol extends Protocol{
     public HeartBeatProtocol() { ;
         protocolName = "heart beat";
