@@ -9,6 +9,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
+import java.util.Vector;
 
 public class GameServer {
     Conn[] conns;
@@ -27,8 +28,8 @@ public class GameServer {
 
     public void start(int port){
 //        定时器,定时检查心跳包
-//        Timer timer = new Timer();
-//        timer.schedule(new CheckTask(3000l),3000,3000);
+        Timer timer = new Timer();
+        timer.schedule(new CheckTask(3000l),3000,3000);
         try (ServerSocket serverSocket = new ServerSocket(port)){
             Socket cli;
             while((cli = serverSocket.accept())!=null){
@@ -36,7 +37,9 @@ public class GameServer {
                 for(int i = 0;i<MAX_LENGTH;i++){
                     if(!conns[i].isUsed){
                         conn = conns[i];
-                        activeLink.add(conn);
+                        synchronized (activeLink) {
+                            activeLink.add(conn);
+                        }
                         break;
                     }
                 }

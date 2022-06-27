@@ -19,6 +19,7 @@ public class DecodeUtils {
         System.out.println(length);
         int start = 4;
         byte[] res = new byte[length];
+        if (length==0) throw new RuntimeException("服务端已断开连接");
         for(int i = start;i<length+start;i++){
             res[i-start] = buffer[i];
         }

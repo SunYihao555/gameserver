@@ -16,9 +16,11 @@ public class Cli2 {
                 String next = scanner.nextLine();
                 System.out.println(next.length());
                 byte[] protocol = ProtocolUtils.getProtocol(next.length(), next);
-                socket.getOutputStream().write(protocol);
-
-
+                try {
+                    socket.getOutputStream().write(protocol);
+                }catch (Exception e){
+                    break;
+                }
 
 //                System.out.println(buffer);
             }

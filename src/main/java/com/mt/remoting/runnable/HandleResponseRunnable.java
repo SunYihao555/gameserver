@@ -19,11 +19,14 @@ public class HandleResponseRunnable implements Runnable{
             String protocol = null;
             try {
                 protocol = DecodeUtils.getProtocol(inputStream);
-            } catch (UnsupportedEncodingException e) {
+            } catch (UnsupportedEncodingException | RuntimeException e) {
+                if (e.getMessage().equals("服务端已断开连接")) break;
                 e.printStackTrace();
             }
+
             System.out.println(protocol);
         }
+        System.out.println("不在接受消息");
 
     }
 }
