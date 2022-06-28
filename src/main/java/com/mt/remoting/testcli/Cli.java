@@ -18,7 +18,9 @@ public class Cli {
                 String next = scanner.nextLine();
                 System.out.println(next.length());
                 byte[] protocol = ProtocolUtils.getProtocol(next.length(), next);
+                System.out.println("=========发送协议========");
                 socket.getOutputStream().write(protocol);
+                socket.getOutputStream().flush();
 
 
 //                int count = socket.getInputStream().read(buffer);

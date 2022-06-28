@@ -7,7 +7,7 @@ import java.nio.charset.StandardCharsets;
 
 public class ProtocolUtils {
     public static byte[] getProtocol(int length,String msg){
-        byte[] bytes = new byte[1024];
+        byte[] bytes = new byte[length+4];
         System.arraycopy(EncodeUtils.intToByte(length),0,bytes,0,4);
         try {
             System.arraycopy(msg.getBytes("UTF-8"),0,bytes,4,msg.getBytes().length);

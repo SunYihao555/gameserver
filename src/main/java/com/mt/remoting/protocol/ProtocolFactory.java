@@ -11,15 +11,19 @@ import java.util.concurrent.ConcurrentHashMap;
 
 //TODO 不满足open close 后期优化可以使用注解加反射对协议进行实例化
 public class ProtocolFactory {
-    public static Map<String,Protocol> protocolMap = new ConcurrentHashMap<>();
-    static {
+    public  Map<String,Protocol> protocolMap = new HashMap<>();
+
+    public ProtocolFactory(){
+        init();
+    }
+    public void init(){
         String basePackage = "com.mt.remoting.protocol";
         URL resource = ProtocolFactory.class.getClassLoader().getResource(basePackage.replaceAll("\\.","/"));
         String path = resource.getFile();
         File listFile = new File(path);
         for (File file : listFile.listFiles()) {
             if(!file.isDirectory()){
-               String className = basePackage+"."+file.getName().replaceAll(".class","");
+                String className = basePackage+"."+file.getName().replaceAll(".class","");
                 try {
                     Class<?> clazz = Class.forName(className);
                     if(clazz.isAnnotationPresent(ProtocolComponent.class)){
@@ -32,11 +36,11 @@ public class ProtocolFactory {
                 }
             }
         }
-
     }
 
 
-    public static Protocol getProtocol(String protocolName,String protocol){
+
+    public  Protocol getProtocol(String protocolName,String protocol){
         Protocol resProtocol = protocolMap.get(protocolName);
         resProtocol.setProtocolMsg(protocol);
         return resProtocol;

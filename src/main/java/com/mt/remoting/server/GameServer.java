@@ -12,7 +12,7 @@ import java.util.Timer;
 import java.util.Vector;
 
 public class GameServer {
-    Conn[] conns;
+    public static Conn[] conns;
     public static List<Conn> activeLink = new ArrayList<>();
     private static final int MAX_LENGTH = 50;
 
@@ -37,9 +37,6 @@ public class GameServer {
                 for(int i = 0;i<MAX_LENGTH;i++){
                     if(!conns[i].isUsed){
                         conn = conns[i];
-                        synchronized (activeLink) {
-                            activeLink.add(conn);
-                        }
                         break;
                     }
                 }
