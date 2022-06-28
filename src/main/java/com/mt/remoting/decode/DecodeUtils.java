@@ -8,23 +8,18 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 
 public class DecodeUtils {
-    public static String getProtocol(InputStream inputStream) throws UnsupportedEncodingException {
-        byte[] buffer = new byte[1024];
-        try {
-            inputStream.read(buffer);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        int length = EncodeUtils.byteArrayToInt(buffer);
-        System.out.println(length);
-        int start = 4;
-        byte[] res = new byte[length];
+    public static byte[] bytes = new byte[1024];
+    public static String getProtocol(InputStream inputStream) throws IOException {
+        inputStream.read(bytes,0,4);
+
+        int length = EncodeUtils.byteArrayToInt(bytes);
+
         if (length==0) throw new RuntimeException("服务端已断开连接");
-        for(int i = start;i<length+start;i++){
-            res[i-start] = buffer[i];
-        }
-        return new String(res,"UTF-8");
+
+        inputStream.read(bytes,0,length);
 
 
+        return new String(bytes,0,length);
     }
+
 }

@@ -1,17 +1,21 @@
 package com.mt.remoting.server;
 
 import com.mt.remoting.encode.EncodeUtils;
+import com.mt.remoting.gamebean.Player;
 import com.mt.remoting.protocol.Protocol;
+import com.mt.remoting.protocol.ProtocolFactory;
+import com.mt.remoting.room.Room;
+import com.mt.remoting.util.ProtocolUtils;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.Socket;
-import java.nio.Buffer;
-import java.util.Arrays;
 
 public class Conn {
+    private ProtocolFactory protocolFactory;
     private int id;
+    private Room currentRoom;
+    private Player player;
+
     private Socket socket;
     private byte[] buffer;
     public boolean isUsed;
@@ -28,14 +32,7 @@ public class Conn {
         this.ready = ready;
     }
 
-    //    public void read(){
-//        try {
-//
-//            socket.getInputStream().;
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
+
     public int getId(){
         return id;
     }
@@ -44,50 +41,85 @@ public class Conn {
         return socket;
     }
 
-    public void setSocket(Socket socket) {
-        this.socket = socket;
+    public void setCurrentRoom(Room room){
+        this.currentRoom = room;
+        room.add(this);
+    }
+    public void enterRoom(Room room){
+        setCurrentRoom(room);
+
+    }
+    public void exitRoom(){
+        this.currentRoom.remove(this);
+        this.currentRoom = null;
+    }
+    public Room getCurrentRoom(){return this.currentRoom;}
+
+    public ProtocolFactory getProtocolFactory() {
+        return protocolFactory;
     }
 
-    public byte[] getBuffer() {
-        return buffer;
+    public void setProtocolFactory(ProtocolFactory protocolFactory) {
+        this.protocolFactory = protocolFactory;
     }
 
-    public void setBuffer(byte[] buffer) {
-        this.buffer = buffer;
-    }
-
-    public int getPointer() {
-        return pointer;
-    }
-
-    public void setPointer(int pointer) {
-        this.pointer = pointer;
-    }
     public String read(int length){
-        char[] chars = new char[length];
         try {
-            BufferedReader br = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
-            br.read(chars,0,length);
-
+            this.socket.getInputStream().read(buffer,pointer,length);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return String.valueOf(chars);
+
+        return new String(buffer,pointer,length);
 
     }
-    public byte[] readInt32(){
+
+    //////////////////////////////
+//    public String read(int length){
+//        char[] chars = new char[length];
+//        try {
+//            BufferedReader br = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
+//            br.read(chars,0,length);
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        return String.valueOf(chars);
+//
+//    }
+    ///////////////////////////////
+
+    public int readProtocolLength(){
+        pointer = 0;
         try {
-            this.socket.getInputStream().read(buffer,0,4);
+            this.socket.getInputStream().read(buffer,pointer,4);
         } catch (IOException e) {
             throw new RuntimeException("连接异常关闭");
         }
-        return buffer;
+        pointer = 4;
+        return EncodeUtils.byteArrayToInt(buffer);
+
+    }
+    public String readProtocol(int length){
+        try {
+            this.socket.getInputStream().read(buffer,pointer,length);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return new String(buffer,pointer,length);
+    }
+
+    public void writeProtocol(String protocol) throws IOException {
+
+        byte[] protocolBytes = ProtocolUtils.getProtocol(protocol.length(), protocol);
+        socket.getOutputStream().write(protocolBytes);
+        socket.getOutputStream().flush();
 
     }
 
     public Conn(int index){
         id = index;
-
         isUsed = false;
 
     }
@@ -96,6 +128,7 @@ public class Conn {
         lastAsyncTime = System.currentTimeMillis();
         buffer = new byte[BUFFER_SIZE];
         isUsed = true;
+        protocolFactory = new ProtocolFactory();
         pointer = 0;
     }
     public void execute(Protocol protocol){
@@ -105,7 +138,6 @@ public class Conn {
         try {
             socket.close();
             isUsed = false;
-            GameServer.activeLink.remove(this);
         } catch (IOException e) {
             e.printStackTrace();
         }

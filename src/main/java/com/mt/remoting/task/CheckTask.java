@@ -14,19 +14,15 @@ public class CheckTask extends TimerTask {
     }
     @Override
     public void run() {
-        List<Conn> tmp = new ArrayList<>();
-        for (Conn conn : GameServer.activeLink) {
+        for (Conn conn : GameServer.conns) {
             synchronized (conn){
                 if(System.currentTimeMillis()-conn.lastAsyncTime>timeLimit){
-                    System.out.println("关闭了"+conn.getId()+"的无效连接");
-                    tmp.add(conn);
+                    conn.getCurrentRoom().remove(conn);
+                    conn.close();
                 }
             }
+
         }
-        synchronized (GameServer.activeLink){
-            for (Conn conn : tmp) {
-                conn.close();
-            }
-        }
+
     }
 }

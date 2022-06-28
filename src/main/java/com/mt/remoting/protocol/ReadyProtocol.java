@@ -22,12 +22,14 @@ public class ReadyProtocol extends BroadCastProtocol{
 
     @Override
     public void doOther(Conn conn) {
-        for (Conn conn1 : GameServer.activeLink) {
-            if(conn1.getId()!=conn.getId()){
-                try {
-                    conn.getSocket().getOutputStream().write(conn1.getReady());
-                } catch (IOException e) {
-                    e.printStackTrace();
+        synchronized (GameServer.activeLink) {
+            for (Conn conn1 : GameServer.activeLink) {
+                if (conn1.getId() != conn.getId()) {
+                    try {
+                        conn.getSocket().getOutputStream().write(conn1.getReady());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }

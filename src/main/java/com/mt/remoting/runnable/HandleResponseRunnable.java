@@ -14,13 +14,15 @@ public class HandleResponseRunnable implements Runnable{
     }
     @Override
     public void run() {
-        byte[] buffer = new byte[1024];
+
         while(true){
             String protocol = null;
             try {
                 protocol = DecodeUtils.getProtocol(inputStream);
             } catch (UnsupportedEncodingException | RuntimeException e) {
                 if (e.getMessage().equals("服务端已断开连接")) break;
+                e.printStackTrace();
+            } catch (IOException e) {
                 e.printStackTrace();
             }
 
