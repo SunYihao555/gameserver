@@ -20,10 +20,11 @@ public class HandleResponseRunnable implements Runnable{
             try {
                 protocol = DecodeUtils.getProtocol(inputStream);
             } catch (UnsupportedEncodingException | RuntimeException e) {
-                if (e.getMessage().equals("服务端已断开连接")) break;
                 e.printStackTrace();
+                break;
             } catch (IOException e) {
                 e.printStackTrace();
+                break;
             }
 
             System.out.println(protocol);

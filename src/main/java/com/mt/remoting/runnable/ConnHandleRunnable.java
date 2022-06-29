@@ -39,18 +39,21 @@ public class ConnHandleRunnable implements Runnable{
 //        conn.close();
 
         while(true) {
-            int length;
-            try {
-                length = conn.readProtocolLength();
-            }catch (Exception e){
-                break;
-            }
-            String protocol = conn.readProtocol(length);
+//            int length;
+//            try {
+//                length = conn.readProtocolLength();
+//            }catch (Exception e){
+//                break;
+//            }
+//            System.out.println(length);
+//            String protocol = conn.readProtocol(length);
+            String protocol = conn.read2();
+            System.out.println(protocol);
             String[] split = protocol.split(":");
-            if(split.length!=2) break;
-            conn.execute(conn.getProtocolFactory().getProtocol(split[0],split[1]));
+            if(split.length==2) conn.execute(conn.getProtocolFactory().getProtocol(split[0],split[1]));
 
         }
+
 
 
 

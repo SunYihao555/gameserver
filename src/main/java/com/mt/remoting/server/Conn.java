@@ -73,6 +73,18 @@ public class Conn {
         return new String(buffer,pointer,length);
 
     }
+    public String read2(){
+        try {
+            this.socket.getInputStream().read(buffer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        int i = EncodeUtils.byteArrayToInt(buffer);
+
+
+        return new String(buffer,4,i);
+
+    }
 
     //////////////////////////////
 //    public String read(int length){
