@@ -75,9 +75,9 @@ public class Conn {
     }
     public String read2(){
         try {
-            this.socket.getInputStream().read(buffer);
+            int readCount = this.socket.getInputStream().read(buffer);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException("断开连接");
         }
         int i = EncodeUtils.byteArrayToInt(buffer);
 

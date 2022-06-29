@@ -47,14 +47,20 @@ public class ConnHandleRunnable implements Runnable{
 //            }
 //            System.out.println(length);
 //            String protocol = conn.readProtocol(length);
-            String protocol = conn.read2();
+            String protocol;
+            try {
+                protocol = conn.read2();
+            }catch (Exception e){
+                break;
+            }
             System.out.println(protocol);
             String[] split = protocol.split(":");
             if(split.length==2) conn.execute(conn.getProtocolFactory().getProtocol(split[0],split[1]));
 
         }
+        System.out.println("客户端断开连接");
 
-
+        
 
 
     }
