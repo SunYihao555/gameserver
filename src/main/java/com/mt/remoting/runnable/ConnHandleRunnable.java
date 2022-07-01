@@ -1,5 +1,6 @@
 package com.mt.remoting.runnable;
 
+import com.mt.remoting.connenum.ConnectionStatus;
 import com.mt.remoting.encode.EncodeUtils;
 import com.mt.remoting.protocol.ProtocolFactory;
 import com.mt.remoting.server.Conn;
@@ -57,6 +58,10 @@ public class ConnHandleRunnable implements Runnable{
             String[] split = protocol.split(":");
             if(split.length==2) conn.execute(conn.getProtocolFactory().getProtocol(split[0],split[1]));
 
+        }
+        synchronized (conn){
+            conn.setConnStatus(ConnectionStatus.OUTLINE);
+            conn.close();
         }
         System.out.println("客户端断开连接");
 

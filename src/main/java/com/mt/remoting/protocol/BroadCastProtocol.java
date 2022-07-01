@@ -1,5 +1,6 @@
 package com.mt.remoting.protocol;
 
+import com.mt.remoting.connenum.ConnectionStatus;
 import com.mt.remoting.server.Conn;
 import com.mt.remoting.server.GameServer;
 import com.mt.remoting.util.ProtocolUtils;
@@ -11,13 +12,18 @@ public abstract class BroadCastProtocol extends Protocol{
     public void execute(Conn conn) {
         for (Conn conn1 : conn.getCurrentRoom().getQueue()) {
             if(conn1.getId()!=conn.getId()){
-                String protocolWhole = protocolName+":"+protocolMsg;
+                String protocolWhole = protocolName + ":" + protocolMsg;
                 byte[] protocol = ProtocolUtils.getProtocol(protocolWhole.length(), protocolWhole);
-                    try {
-                        conn1.getSocket().getOutputStream().write(protocol);
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                synchronized (conn1) {
+                    if (conn1.getConnStatus().equals(ConnectionStatus.ONLINE)) {
+                        try {
+                            conn1.getSocket().getOutputStream().write(protocol);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
+                }
+
             }
         }
         //交给子类实现

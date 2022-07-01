@@ -1,5 +1,6 @@
 package com.mt.remoting.server;
 
+import com.mt.remoting.connenum.ConnectionStatus;
 import com.mt.remoting.encode.EncodeUtils;
 import com.mt.remoting.gamebean.Player;
 import com.mt.remoting.protocol.Protocol;
@@ -12,6 +13,7 @@ import java.net.Socket;
 
 public class Conn {
     private ProtocolFactory protocolFactory;
+    private Enum connStatus;
     private int id;
     private Room currentRoom;
     private Player player;
@@ -23,6 +25,14 @@ public class Conn {
     public long lastAsyncTime;
     private int pointer;
     private byte[] ready;
+
+    public Enum getConnStatus() {
+        return connStatus;
+    }
+
+    public void setConnStatus(Enum connStatus) {
+        this.connStatus = connStatus;
+    }
 
     public byte[] getReady() {
         return ready;
@@ -74,11 +84,15 @@ public class Conn {
 
     }
     public String read2(){
+        int readCount;
         try {
-            int readCount = this.socket.getInputStream().read(buffer);
+            readCount = this.socket.getInputStream().read(buffer);
         } catch (IOException e) {
             throw new RuntimeException("断开连接");
         }
+        System.out.println(readCount);
+        if(readCount==-1) throw new RuntimeException("没有数据");
+
         int i = EncodeUtils.byteArrayToInt(buffer);
 
 

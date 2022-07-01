@@ -1,5 +1,6 @@
 package com.mt.remoting.server;
 
+import com.mt.remoting.connenum.ConnectionStatus;
 import com.mt.remoting.runnable.ConnHandleRunnable;
 import com.mt.remoting.task.CheckTask;
 
@@ -45,6 +46,8 @@ public class GameServer {
                     continue;
                 }
                 conn.init(cli);
+                conn.setConnStatus(ConnectionStatus.ONLINE);
+                //TODO 改为线程池实现
                 new Thread(new ConnHandleRunnable(conn)).start();
             }
             
