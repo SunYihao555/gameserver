@@ -1,11 +1,7 @@
 package com.mt.remoting.runnable;
 
-import com.mt.remoting.connenum.ConnectionStatus;
-import com.mt.remoting.encode.EncodeUtils;
-import com.mt.remoting.protocol.ProtocolFactory;
+import com.mt.remoting.gameenum.ConnectionStatus;
 import com.mt.remoting.server.Conn;
-
-import java.io.UnsupportedEncodingException;
 
 public class ConnHandleRunnable implements Runnable{
     private Conn conn;

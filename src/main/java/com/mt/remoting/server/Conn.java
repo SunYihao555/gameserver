@@ -1,10 +1,9 @@
 package com.mt.remoting.server;
 
-import com.mt.remoting.connenum.ConnectionStatus;
 import com.mt.remoting.encode.EncodeUtils;
 import com.mt.remoting.gamebean.Player;
-import com.mt.remoting.protocol.Protocol;
-import com.mt.remoting.protocol.ProtocolFactory;
+import com.mt.remoting.dto.protocol.Protocol;
+import com.mt.remoting.dto.protocol.ProtocolFactory;
 import com.mt.remoting.room.Room;
 import com.mt.remoting.util.ProtocolUtils;
 
@@ -25,6 +24,9 @@ public class Conn {
     public long lastAsyncTime;
     private int pointer;
     private byte[] ready;
+    public void setPlayer(Player player){
+        this.player = player;
+    }
 
     public Enum getConnStatus() {
         return connStatus;

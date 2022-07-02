@@ -1,13 +1,11 @@
-package com.mt.remoting.protocol;
+package com.mt.remoting.dto.protocol;
 
 import com.mt.remoting.annotation.ProtocolComponent;
 
 import java.io.File;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 //TODO 不满足open close 后期优化可以使用注解加反射对协议进行实例化
 public class ProtocolFactory {
@@ -17,7 +15,7 @@ public class ProtocolFactory {
         init();
     }
     public void init(){
-        String basePackage = "com.mt.remoting.protocol";
+        String basePackage = "com.mt.remoting.dto.protocol";
         URL resource = ProtocolFactory.class.getClassLoader().getResource(basePackage.replaceAll("\\.","/"));
         String path = resource.getFile();
         File listFile = new File(path);

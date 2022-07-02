@@ -1,11 +1,9 @@
 package com.mt.remoting.decode;
 
 import com.mt.remoting.encode.EncodeUtils;
-import com.mt.remoting.protocol.Protocol;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 
 public class DecodeUtils {
     public static byte[] bytes = new byte[1024];

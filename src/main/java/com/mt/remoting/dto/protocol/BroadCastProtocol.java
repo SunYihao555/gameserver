@@ -1,8 +1,7 @@
-package com.mt.remoting.protocol;
+package com.mt.remoting.dto.protocol;
 
-import com.mt.remoting.connenum.ConnectionStatus;
+import com.mt.remoting.gameenum.ConnectionStatus;
 import com.mt.remoting.server.Conn;
-import com.mt.remoting.server.GameServer;
 import com.mt.remoting.util.ProtocolUtils;
 
 import java.io.IOException;

@@ -1,16 +1,13 @@
 package com.mt.remoting.server;
 
-import com.mt.remoting.connenum.ConnectionStatus;
+import com.mt.remoting.gameenum.ConnectionStatus;
 import com.mt.remoting.runnable.ConnHandleRunnable;
-import com.mt.remoting.task.CheckTask;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.Vector;
 
 public class GameServer {
     public static Conn[] conns;

@@ -1,4 +1,4 @@
-package com.mt.remoting.connenum;
+package com.mt.remoting.gameenum;
 
 public enum  ConnectionStatus {
     ONLINE("在线"),OUTLINE("离线");
